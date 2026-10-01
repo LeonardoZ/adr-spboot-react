@@ -1,0 +1,23 @@
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+.idea/
+backend/.idea/
+*.iml
+
+# Backend build output
+backend/target/
+
+# Frontend dependencies and build/test output
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+
+# Operating-system and log files
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,21 @@
+filebeat.inputs:
+  - type: container
+    id: docker-container-logs
+    stream: all
+    format: docker
+    paths:
+      - /var/lib/docker/containers/*/*.log
+
+processors:
+  - add_docker_metadata:
+      host: unix:///var/run/docker.sock
+  # Keep collection opt-in: only services carrying the Compose label
+  # `co.elastic.logs/enabled: "true"` are sent to Logstash.
+  - drop_event:
+      when:
+        not:
+          equals:
+            container.labels.co_elastic_logs/enabled: "true"
+
+output.logstash:
+  hosts: ["logstash:5044"]

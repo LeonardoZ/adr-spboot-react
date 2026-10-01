@@ -1,0 +1,87 @@
+{
+  "realm": "adr-manager",
+  "enabled": true,
+  "displayName": "ADR Manager (development)",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "rememberMe": false,
+  "roles": {
+    "realm": [
+      { "name": "USER", "description": "Can use the decision register" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "adr-manager-spa",
+      "name": "ADR Manager SPA",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "attributes": { "pkce.code.challenge.method": "S256" }
+    },
+    {
+      "id": "adr-manager-api",
+      "clientId": "adr-manager-api",
+      "name": "ADR Manager API",
+      "enabled": true,
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-api-client-secret",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "fullScopeAllowed": true
+    }
+  ],
+  "users": [
+    {
+      "username": "alice.architect",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Alice",
+      "lastName": "Architect",
+      "email": "alice.architect@example.test",
+      "credentials": [{ "type": "password", "value": "alice-password", "temporary": false }],
+      "realmRoles": ["USER"]
+    },
+    {
+      "username": "bob.approver",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Bob",
+      "lastName": "Approver",
+      "email": "bob.approver@example.test",
+      "credentials": [{ "type": "password", "value": "bob-password", "temporary": false }],
+      "realmRoles": ["USER"]
+    },
+    {
+      "username": "carol.admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Carol",
+      "lastName": "Admin",
+      "email": "carol.admin@example.test",
+      "credentials": [{ "type": "password", "value": "carol-password", "temporary": false }],
+      "realmRoles": ["USER"]
+    },
+    {
+      "username": "dave.user",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Dave",
+      "lastName": "User",
+      "email": "dave.user@example.test",
+      "credentials": [{ "type": "password", "value": "dave-password", "temporary": false }],
+      "realmRoles": ["USER"]
+    },
+    {
+      "username": "service-account-adr-manager-api",
+      "enabled": true,
+      "serviceAccountClientId": "adr-manager-api",
+      "clientRoles": { "realm-management": ["query-users", "view-users"] }
+    }
+  ]
+}
