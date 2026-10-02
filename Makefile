@@ -5,7 +5,7 @@ SERVICE ?=
 
 COMPOSE := docker compose --env-file $(ENV_FILE)
 
-.PHONY: help init config up down restart ps logs recreate-keycloak format-backend test-backend test-frontend test build-backend build-frontend build e2e verify reset
+.PHONY: help init config up down restart ps logs recreate-keycloak format-backend format-frontend check-format-frontend test-backend test-frontend test build-backend build-frontend build e2e verify reset
 
 help:
 	@printf '%s\n' \
@@ -25,6 +25,8 @@ help:
 	  '' \
 	  'Qualidade e build:' \
 	  '  make format-backend         Aplica o Spring Java Format ao backend.' \
+	  '  make format-frontend        Instala dependências e aplica o Prettier ao frontend.' \
+	  '  make check-format-frontend  Instala dependências e verifica a formatação do frontend.' \
 	  '  make test-backend          Executa os testes Maven do backend.' \
 	  '  make test-frontend         Instala dependências e executa os testes Vitest.' \
 	  '  make test                  Executa todos os testes.' \
@@ -34,7 +36,7 @@ help:
 	  '' \
 	  'Integração e dados:' \
 	  '  make e2e                   Atualiza a stack, aguarda saúde e executa o cenário E2E.' \
-	  '  make verify                Executa config, testes, builds e E2E.' \
+	  '  make verify                Executa config, formatação do frontend, testes, builds e E2E.' \
 	  '  make reset                 Remove a stack e os volumes locais de MariaDB e Elasticsearch.' \
 	  '' \
 	  'Exemplos:' \
@@ -73,6 +75,12 @@ recreate-keycloak: init
 format-backend:
 	@cd backend && mvn spring-javaformat:apply
 
+format-frontend:
+	@cd frontend && npm ci && npm run format
+
+check-format-frontend:
+	@cd frontend && npm ci && npm run format:check
+
 test-backend:
 	@cd backend && mvn -Dnet.bytebuddy.experimental=true test
 
@@ -92,7 +100,7 @@ build: build-backend build-frontend
 e2e: up
 	@./scripts/compose-e2e.sh
 
-verify: config test build e2e
+verify: config check-format-frontend test build e2e
 
 reset: init
 	@$(COMPOSE) down -v

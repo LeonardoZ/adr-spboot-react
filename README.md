@@ -60,10 +60,12 @@ make down                     # stop and remove the stack
 make reset                    # remove the stack and local database/search data
 
 make format-backend           # apply Spring Java Format
+make format-frontend          # install dependencies and apply Prettier
+make check-format-frontend    # install dependencies and check Prettier formatting
 make test                     # run backend and frontend tests
 make build                    # build the backend and SPA
 make e2e                      # run the authenticated E2E scenario
-make verify                   # validate config, test, build, and run E2E
+make verify                   # validate config, check frontend formatting, test, build, and run E2E
 ```
 
 Backend Java sources follow Spring Java Format. Apply the formatter before
@@ -76,14 +78,24 @@ make format-backend
 Maven validates formatting automatically during its `validate` phase, including
 when `make test-backend` runs.
 
+Frontend source, tests, HTML, and JSON/TypeScript configuration follow Prettier
+with two-space indentation, single-quoted TypeScript strings, double-quoted
+JSX attributes, semicolons, trailing commas, and a 100-character print width.
+Run `make format-frontend` before committing frontend changes and
+`make check-format-frontend` to check formatting without changing files.
+With dependencies installed, the equivalent commands from `frontend/` are
+`npm run format` and `npm run format:check`. Dependencies, build and coverage
+outputs, lockfiles, TypeScript build metadata, and generated Vite configuration
+JavaScript/declarations are excluded.
+
 For example, run the stack with a local environment file using:
 
 ```bash
 ENV_FILE=.env.local make up
 ```
 
-`make verify` runs Compose configuration validation, all tests, both builds,
-and the authenticated end-to-end scenario.
+`make verify` runs Compose configuration validation, the frontend formatting
+check, all tests, both builds, and the authenticated end-to-end scenario.
 
 ## Local application logs
 

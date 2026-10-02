@@ -27,8 +27,25 @@ const theme = createTheme({
     button: { fontWeight: 700, textTransform: 'none' },
   },
   components: {
-    MuiPaper: { styleOverrides: { root: { border: '1px solid #eadfd5', boxShadow: '0 8px 24px rgba(67, 47, 35, 0.06)' } } },
+    MuiPaper: {
+      styleOverrides: {
+        root: { border: '1px solid #eadfd5', boxShadow: '0 8px 24px rgba(67, 47, 35, 0.06)' },
+      },
+    },
     MuiButton: { styleOverrides: { root: { borderRadius: 10 } } },
   },
 });
-createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><ThemeProvider theme={theme}><CssBaseline /><BrowserRouter><AuthProvider><App /></AuthProvider></BrowserRouter></ThemeProvider></QueryClientProvider></React.StrictMode>);
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </React.StrictMode>,
+);

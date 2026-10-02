@@ -9,16 +9,30 @@ vi.mock('../auth/AuthProvider', () => ({ useAuth: () => ({ user: { access_token:
 vi.mock('./auditApi', () => ({ auditApi: mocks }));
 
 function renderHistory() {
-  return render(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
-    <AuditHistory kind="adl" identifier="ADL-1" />
-  </QueryClientProvider>);
+  return render(
+    <QueryClientProvider
+      client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
+    >
+      <AuditHistory kind="adl" identifier="ADL-1" />
+    </QueryClientProvider>,
+  );
 }
 
 describe('AuditHistory', () => {
   it('renders structured chronological event values', async () => {
     mocks.adl.mockResolvedValueOnce([
-      { action: 'CREATED', actorDisplayName: 'Architect One', occurredAt: '2026-01-01T10:00:00Z', afterValue: '{"status":"OPEN"}' },
-      { action: 'ARCHIVED', actorDisplayName: 'Architect Two', occurredAt: '2026-02-01T10:00:00Z', afterValue: '{"status":"ARCHIVED"}' },
+      {
+        action: 'CREATED',
+        actorDisplayName: 'Architect One',
+        occurredAt: '2026-01-01T10:00:00Z',
+        afterValue: '{"status":"OPEN"}',
+      },
+      {
+        action: 'ARCHIVED',
+        actorDisplayName: 'Architect Two',
+        occurredAt: '2026-02-01T10:00:00Z',
+        afterValue: '{"status":"ARCHIVED"}',
+      },
     ]);
     renderHistory();
     expect(await screen.findByText('CREATED')).toBeInTheDocument();

@@ -28,12 +28,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({
-    user,
-    isLoading,
-    login: (returnTo = '/') => oidcManager.signinRedirect({ state: { returnTo } }),
-    logout: () => oidcManager.signoutRedirect(),
-  }), [isLoading, user]);
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      user,
+      isLoading,
+      login: (returnTo = '/') => oidcManager.signinRedirect({ state: { returnTo } }),
+      logout: () => oidcManager.signoutRedirect(),
+    }),
+    [isLoading, user],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
